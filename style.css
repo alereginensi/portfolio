@@ -226,7 +226,7 @@ h1, h2, h3, .logo { font-family: var(--font-mono); }
    ============================================================ */
 .nav-uv {
     position: relative;
-    width: 450px;
+    width: 540px;
     height: 36px;
     display: flex;
     flex-direction: row;
@@ -273,36 +273,57 @@ h1, h2, h3, .logo { font-family: var(--font-mono); }
 .nav-uv-btn:hover        { color: var(--text); background: rgba(88, 200, 192, 0.06); }
 .nav-uv-btn.active       { color: var(--accent); }
 
-/* Per-button bracket positions — W=450 H=36, 5 equal slots of 90px
-   nth-child starts at 2 because nav-close button is child 1
-   Formula: stroke-dasharray: 0 [gap1] [dash] [gap2] [dash] [gap3]
-   where dash = button_width / unit_px (unit = perimeter/100 = 9.72px) */
+/* Per-button bracket — W=540 H=36, 6 slots ×90px; pathLength 100; dash ≈7.81
+   nth-child 2..7 = enlaces (el botón nav-close es hijo 1) */
+/* Scroll spy: .active sin hover */
+.nav-uv-btn:nth-child(2).active ~ svg .nav-uv-rect {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0 0 7.81 80.68 7.81 3.7;
+}
+.nav-uv-btn:nth-child(3).active ~ svg .nav-uv-rect {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0 7.81 7.81 68.86 7.81 7.71;
+}
+.nav-uv-btn:nth-child(4).active ~ svg .nav-uv-rect {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0 15.62 7.81 61.05 7.81 7.71;
+}
+.nav-uv-btn:nth-child(5).active ~ svg .nav-uv-rect {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0 23.43 7.81 53.24 7.81 7.71;
+}
+.nav-uv-btn:nth-child(6).active ~ svg .nav-uv-rect {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0 31.24 7.81 45.43 7.81 7.71;
+}
+.nav-uv-btn:nth-child(7).active ~ svg .nav-uv-rect {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 0 39.05 7.81 37.62 7.81 7.71;
+}
+/* Hover después de .active: gana el tab que estás hovereando aunque otro tenga .active */
 .nav-uv-btn:nth-child(2):hover ~ svg .nav-uv-rect {
     stroke-dashoffset: 0;
-    stroke-dasharray: 0 0 9.3 77.8 9.3 3.7;
+    stroke-dasharray: 0 0 7.81 80.68 7.81 3.7;
 }
 .nav-uv-btn:nth-child(3):hover ~ svg .nav-uv-rect {
     stroke-dashoffset: 0;
-    stroke-dasharray: 0 9.3 9.3 59.3 9.3 13;
+    stroke-dasharray: 0 7.81 7.81 68.86 7.81 7.71;
 }
 .nav-uv-btn:nth-child(4):hover ~ svg .nav-uv-rect {
     stroke-dashoffset: 0;
-    stroke-dasharray: 0 18.5 9.3 40.7 9.3 22.2;
+    stroke-dasharray: 0 15.62 7.81 61.05 7.81 7.71;
 }
 .nav-uv-btn:nth-child(5):hover ~ svg .nav-uv-rect {
     stroke-dashoffset: 0;
-    stroke-dasharray: 0 27.8 9.3 22.2 9.3 31.5;
+    stroke-dasharray: 0 23.43 7.81 53.24 7.81 7.71;
 }
 .nav-uv-btn:nth-child(6):hover ~ svg .nav-uv-rect {
     stroke-dashoffset: 0;
-    stroke-dasharray: 0 37 9.3 3.7 9.3 40.7;
+    stroke-dasharray: 0 31.24 7.81 45.43 7.81 7.71;
 }
-
-/* Reset on generic btn hover (lower specificity, !important on transition only) */
-.nav-uv-btn:hover ~ .nav-uv-outline .nav-uv-rect {
+.nav-uv-btn:nth-child(7):hover ~ svg .nav-uv-rect {
     stroke-dashoffset: 0;
-    stroke-dasharray: 0 0 10 40 10 40;
-    transition: 0.5s !important;
+    stroke-dasharray: 0 39.05 7.81 37.62 7.81 7.71;
 }
 
 .nav-right {
@@ -1513,7 +1534,295 @@ h1, h2, h3, .logo { font-family: var(--font-mono); }
 .projects-grid-secondary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 24px;
+}
+
+/* Freelance cards — formato Uiverse (pharmacist-sabot), colores del sitio */
+@keyframes freelance-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+@keyframes freelance-grid-move {
+    0%   { background-position: 0 0; }
+    100% { background-position: 30px 30px; }
+}
+
+.freelance-lead {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 720px;
+    margin: -12px 0 28px;
+    line-height: 1.7;
+}
+
+#freelance .freelance-card {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 14px;
+    padding: 22px 24px 24px;
+    box-shadow: 0 4px 22px -2px rgba(0, 0, 0, 0.22);
+    transition:
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
+}
+#freelance .project-card.freelance-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: rgba(88, 200, 192, 0.45);
+    box-shadow:
+        0 18px 38px -8px rgba(0, 0, 0, 0.45),
+        0 0 0 1px var(--accent-glow);
+}
+
+#freelance .freelance-card-grid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(88, 200, 192, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(88, 200, 192, 0.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+    mask-image: linear-gradient(to bottom, black 42%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 42%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.45;
+    transition: opacity 0.45s ease;
+}
+#freelance .freelance-card:hover .freelance-card-grid {
+    animation: freelance-grid-move 20s linear infinite;
+    opacity: 0.75;
+}
+
+#freelance .freelance-card-glow {
+    position: absolute;
+    top: -48px;
+    right: -48px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 72%);
+    filter: blur(42px);
+    pointer-events: none;
+    z-index: 1;
+    transition: transform 0.45s ease, opacity 0.45s ease;
+}
+#freelance .freelance-card:hover .freelance-card-glow {
+    transform: scale(1.45);
+    opacity: 1;
+}
+
+#freelance .freelance-card-head {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+#freelance .freelance-card-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+#freelance .freelance-logo-shell {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    background: rgba(88, 200, 192, 0.04);
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    transition: background 0.3s ease, border-color 0.3s ease;
+    position: relative;
+}
+#freelance .freelance-card:hover .freelance-logo-shell {
+    background: rgba(88, 200, 192, 0.08);
+    border-color: rgba(88, 200, 192, 0.25);
+}
+#freelance .freelance-logo {
+    max-height: 38px;
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    opacity: 0.95;
+}
+#freelance .freelance-logo--light { display: none; }
+.light-mode #freelance .freelance-logo--dark { display: none; }
+.light-mode #freelance .freelance-logo--light {
+    display: block;
+    opacity: 1;
+}
+
+#freelance .freelance-card-brandname {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#freelance .freelance-icon-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+#freelance .freelance-icon-btn:hover {
+    color: var(--accent);
+    background: rgba(88, 200, 192, 0.08);
+    border-color: rgba(88, 200, 192, 0.2);
+    transform: translateY(-2px);
+}
+#freelance .freelance-icon-svg {
+    width: 20px;
+    height: 20px;
+}
+
+#freelance .freelance-card-body {
+    position: relative;
+    z-index: 2;
+}
+#freelance .freelance-card-title {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+}
+#freelance .freelance-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 3px;
+    margin-left: 6px;
+    background-color: var(--accent);
+    animation: freelance-blink 1s step-end infinite;
+    box-shadow: 0 0 8px rgba(88, 200, 192, 0.55);
+    vertical-align: middle;
+}
+#freelance .freelance-card-desc {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin: 0 0 18px 0;
+}
+#freelance .freelance-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+#freelance .freelance-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+#freelance .freelance-badge--accent {
+    background: rgba(88, 200, 192, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(88, 200, 192, 0.22);
+}
+#freelance .freelance-badge--accent:hover {
+    background: rgba(88, 200, 192, 0.18);
+    box-shadow: 0 0 12px rgba(88, 200, 192, 0.2);
+    transform: translateY(-1px);
+}
+#freelance .freelance-badge--muted {
+    background: rgba(139, 148, 158, 0.08);
+    color: var(--text-muted);
+    border: 1px solid var(--card-border);
+}
+#freelance .freelance-badge--muted:hover {
+    background: rgba(139, 148, 158, 0.14);
+    transform: translateY(-1px);
+}
+
+#freelance .freelance-card-cta {
+    display: inline-block;
+    margin-top: 16px;
+}
+
+/* Light mode: tarjetas freelance (fondo blanco, rejilla suave, logos dedicados) */
+.light-mode #freelance .freelance-card {
+    background: #ffffff;
+    border-color: rgba(208, 215, 222, 0.95);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+}
+.light-mode #freelance .project-card.freelance-card:hover {
+    border-color: rgba(9, 105, 218, 0.32);
+    box-shadow:
+        0 16px 36px -10px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(9, 105, 218, 0.1);
+}
+.light-mode #freelance .freelance-card-grid {
+    background-image:
+        linear-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+    opacity: 0.5;
+}
+.light-mode #freelance .freelance-card:hover .freelance-card-grid {
+    opacity: 0.72;
+}
+.light-mode #freelance .freelance-card-glow {
+    background: radial-gradient(circle, rgba(9, 105, 218, 0.12) 0%, transparent 70%);
+}
+.light-mode #freelance .freelance-logo-shell {
+    background: #f4f7fb;
+    border-color: rgba(208, 215, 222, 0.9);
+}
+.light-mode #freelance .freelance-card:hover .freelance-logo-shell {
+    background: #eef2f8;
+    border-color: rgba(9, 105, 218, 0.22);
+}
+.light-mode #freelance .freelance-card-title > span:not(.freelance-cursor) {
+    color: var(--accent);
+}
+.light-mode #freelance .freelance-cursor {
+    box-shadow: 0 0 8px rgba(9, 105, 218, 0.35);
+}
+.light-mode #freelance .freelance-icon-btn {
+    color: #57606a;
+}
+.light-mode #freelance .freelance-icon-btn:hover {
+    color: var(--accent);
+    background: rgba(9, 105, 218, 0.08);
+    border-color: rgba(9, 105, 218, 0.18);
+}
+.light-mode #freelance .freelance-badge--accent {
+    background: rgba(9, 105, 218, 0.09);
+    color: var(--accent);
+    border-color: rgba(9, 105, 218, 0.2);
+}
+.light-mode #freelance .freelance-badge--muted {
+    background: rgba(87, 96, 106, 0.08);
+    color: var(--text-muted);
+    border-color: rgba(208, 215, 222, 0.95);
+}
+.light-mode #freelance .freelance-badge--muted:hover {
+    background: rgba(87, 96, 106, 0.12);
 }
 
 .project-header {

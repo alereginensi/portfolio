@@ -7,6 +7,7 @@ const translations = {
         'nav.experience':  'experiencia',
         'nav.stack':       'stack',
         'nav.projects':    'proyectos',
+        'nav.freelance':   'freelance',
         'nav.contact':     'contacto',
 
         'hero.badge':          'Actualmente en GSS Facility Services',
@@ -18,7 +19,21 @@ const translations = {
         'section.about':       'Sobre mí',
         'section.stack':       'Stack',
         'section.projects':    'Proyectos',
+        'section.freelance':     'Freelance',
         'section.contact':     'Contacto',
+
+        'freelance.lead': 'Sitios web a medida por encargo: estructura, contenido y despliegue listos para producción.',
+        'freelance.anto.title': 'Anto Beauty Art',
+        'freelance.anto.desc': 'Web para estética y formación: servicios, cursos de micropigmentación y mentoría 1:1, con navegación clara y enlaces a contacto y WhatsApp.',
+        'freelance.andrea.title': 'Andrea Zoé Fernández',
+        'freelance.andrea.desc': 'Web profesional de constelaciones familiares: enfoque, beneficios, sesiones y talleres, testimonios y contacto por WhatsApp.',
+        'freelance.cta': 'Visitar sitio',
+        'freelance.anto.slug': 'anto-beauty-art',
+        'freelance.andrea.slug': 'andreazoef',
+        'freelance.badge.web': 'Web',
+        'freelance.badge.client': 'Cliente',
+        'freelance.link.anto.aria': 'Abrir el sitio web de Anto Beauty Art',
+        'freelance.link.andrea.aria': 'Abrir el sitio web de Andrea Zoé Fernández',
 
         'exp.period':      '2026 – Presente',
         'exp.badge':       'Actual',
@@ -58,6 +73,7 @@ const translations = {
         'nav.experience':  'experience',
         'nav.stack':       'stack',
         'nav.projects':    'projects',
+        'nav.freelance':   'freelance',
         'nav.contact':     'contact',
 
         'hero.badge':          'Currently at GSS Facility Services',
@@ -69,7 +85,21 @@ const translations = {
         'section.about':       'About me',
         'section.stack':       'Stack',
         'section.projects':    'Projects',
+        'section.freelance':     'Freelance',
         'section.contact':     'Contact',
+
+        'freelance.lead': 'Custom client sites: structure, content and production-ready deployment.',
+        'freelance.anto.title': 'Anto Beauty Art',
+        'freelance.anto.desc': 'Beauty and training site: services, micropigmentation courses and 1:1 mentorship, with clear navigation and contact/WhatsApp CTAs.',
+        'freelance.andrea.title': 'Andrea Zoé Fernández',
+        'freelance.andrea.desc': 'Professional systemic constellation therapy site: positioning, benefits, sessions and workshops, testimonials and WhatsApp contact.',
+        'freelance.cta': 'Visit site',
+        'freelance.anto.slug': 'anto-beauty-art',
+        'freelance.andrea.slug': 'andreazoef',
+        'freelance.badge.web': 'Web',
+        'freelance.badge.client': 'Client',
+        'freelance.link.anto.aria': 'Open Anto Beauty Art website',
+        'freelance.link.andrea.aria': 'Open Andrea Zoé Fernández website',
 
         'exp.period':      '2026 – Present',
         'exp.badge':       'Current',
@@ -157,6 +187,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+            const key = el.dataset.i18nAria;
+            const text = translations[lang][key];
+            if (text !== undefined) {
+                el.setAttribute('aria-label', text);
+            }
+        });
+
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.lang === lang);
         });
@@ -228,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', updateActiveLink, { passive: true });
+    updateActiveLink();
 
     /* ============================================================
        Scroll Reveal (IntersectionObserver)
