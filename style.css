@@ -228,11 +228,18 @@ h1, h2, h3, .logo { font-family: var(--font-mono); }
 }
 
 .logo {
-    font-size: 1.4rem;
-    color: var(--accent);
-    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
     text-decoration: none;
 }
+
+.logo-img {
+    height: 44px;
+    width: auto;
+    display: block;
+}
+
+.light-mode .logo-img { filter: invert(1) hue-rotate(180deg); }
 
 /* ============================================================
    Nav outline buttons (Uiverse.io by SelfMadeSystem — adapted)
